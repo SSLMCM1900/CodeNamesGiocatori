@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impostazioni</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* CENTRATURA DELLA SCHERMATA */
+    .schermata {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+      flex-direction: column;
+    }
+
+    .container {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+    /* GRID */
+    #grigliaSchermata {
+      display: none;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #grigliaSchermata {
+      display: flex; /* contenitore flessibile */
+      flex-direction: column; /* mette i figli in verticale */
+      align-items: center; /* centra orizzontalmente */
+      justify-content: flex-start; /* inizia dall’alto */
+      gap: 10px; /* spazio tra titolo e griglia */
+      width: 100%;
+      height: 100vh; /* opzionale, occupa tutta l’altezza */
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 110px);
+      grid-template-rows: repeat(5, 110px);
+      gap: 8px;
+    }
+
+    .tile {
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+      .tile.active {
+        background: #4CAF50;
+        color: white;
+      }
+  </style>
+</head>
+<body>
+
+  <!-- SCHERMATA IMPOSTAZIONI -->
+  <div class="schermata" id="pannelloImpostazioni">
+    <div class="container">
+      <h1>Impostazioni</h1>
+      <form>
+        <div class="form-group" id="campoparola">
+          <label for="parola">Inserisci Parola d'ordine</label>
+          <input type="text" id="parola" name="parola"
+                 oninput="this.value=this.value.replace(/[^A-Za-z0-9]/g,'').toUpperCase()" required>
+        </div>
+
+        <div class="form-group" id="contenitoreruolo">
+          <label id="lblruolo" for="selezionaruolo">Sei il capitano?</label>
+          <select id="selezionaruolo">
+            <option value="NESSUNASELEZIONE" selected>NESSUNA SELEZIONE</option>
+            <option value="NO">NO</option>
+            <option value="SI">SI</option>
+          </select>
+        </div>
+
+        <button id="bottoneAvanti" type="button">Avanti</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCHERMATA GRIGLIA -->
+  <div id="grigliaSchermata">
+    <h2 id="titoloGriglia">Titolo della Griglia</h2>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <script>
+    // LISTA PAROLE
+    const parole = [
+      "Abate", "Accardi", "Adani", "Adriano", "Agbonlahor", "Alaba", "Albiol", "Alemao", "Alessandrini", "Alonso",
+      "Altidore", "Amoruso", "Anderson", "Andreolli", "Angeleri", "Ansaldi", "Antonelli", "Aquilani", "Arnautovic", "Asamoah",
+      "Asensio", "Aubameyang", "Ayew", "Babel", "Babacar", "Badelj", "Baggio", "Bailey", "Balbo", "Balotelli",
+      "Barella", "Barbieri", "Barreto", "Barzagli", "Baselli", "Batistuta", "Battaglia", "Beasley", "Beckham", "Belfodil",
+      "Benali", "Benassi", "Berardi", "Bergomi", "Berisha", "Bertani", "Bertini", "Bianchi", "Bierhoff", "Biglia",
+      "Birindelli", "Blasi", "Bogdani", "Bonanno", "Bonaventura", "Bonetti", "Boniek", "Boninsegna", "Bonucci", "Borja",
+      "BorjaValero", "Borriello", "Bovo", "Branca", "Brandao", "Brighi", "Brozovic", "Bruno", "Brunori", "Buffon",
+      "Burdisso", "Busquets", "Caceres", "Cafu", "Cagnano", "Callejon", "Cambiaso", "Cambiasso", "Candreva", "Canales",
+      "Cassano", "Castan", "Cavani", "Ceccarelli", "Centurion", "Cerci", "Cerri", "Chalanoglu", "Chiesa", "Chivu",
+      "Christensen", "Cisse", "Colombo", "Coman", "Comotto", "Conti", "Correa", "Costa", "Costacurta", "Coutinho",
+      "Cragno", "Criscito", "Cristante", "Cuadrado", "Dacourt", "Darmian", "Davids", "DeBruyne", "DeCeglie",
+      "DeLigt", "DeRossi", "DeZerbi", "DelPiero", "Dendoncker", "Diaz", "Diarra", "Donnarumma", "Doumbia", "Dragowski",
+      "Duarte", "Dudek", "Dybala", "Eder", "Ederson", "ElShaarawy", "Elia", "Enrique", "Esposito", "Estigarribia",
+      "Eto’o", "Fabinho", "Fabbri", "Facchetti", "Falcao", "Falcone", "Faraoni", "Farnerud", "Farrugia", "Fazio",
+      "Ferrante", "Ferrari", "Ferreira", "Figueiredo", "Filippi", "Fiorillo", "Floccari", "Forlan", "Frabotta", "Franchi",
+      "Gabbiadini", "Gagliardini", "Garcia", "Gattuso", "Giaccherini", "Gomes", "Gomez", "Goncalves", "Gonzalez", "Gosens",
+      "Greco", "Grifo", "Guarente", "Gueye", "Gudjohnsen", "Guerra", "Hakimi", "Handanovic", "Hasebe", "Hernandez",
+      "Higuain", "Hoedt", "Hoxha", "Iannone", "Icardi", "Ilicic", "Immobile", "Ince", "Inzaghi", "Ishak",
+      "Jair", "Jaquez", "Jankulovski", "Jorginho", "Kabore", "Kakà", "Kaladze", "Kalinic", "Kamara", "Karagounis",
+      "Karamoh", "Karsdorp", "Kessie", "Kimmich", "Kjaer", "Kolarov", "Kouame", "Koulibaly", "Kovacic", "Kramer",
+      "Krunic", "Kucka", "Kudus", "Lainer", "Lapadula", "Lazaro", "Leao", "Leroy", "Lichtsteiner",
+      "Llorente", "Lopez", "Luiz", "Lukaku", "Luperto", "Maignan", "Mancini", "Mandzukic", "Manolas", "Mannini",
+      "Maresca", "Marin", "Martinez", "Martins", "Mata", "Mauri", "Maxwell", "Medel", "Melo",
+      "Menez", "Meret", "Miccoli", "Milanetto", "Milinkovic", "Milito", "Modesto", "Montero", "Montolivo", "Motta",
+      "Muñoz", "Musso", "Nainggolan", "Navarro", "Nesta", "Nicastro", "Nigro", "Nolito", "Novak", "Obiang",
+      "Ochoa", "Olsen", "Omar", "Ospina", "Paci", "Padovani", "Paganini", "Palacio", "Paletta", "Pandev",
+      "Paredes", "Pastore", "Pato", "Paxton", "Pazzini", "Pellegri", "Pellegrini", "Pereira", "Perin", "Peruzzi",
+      "Pesce", "Pessotto", "Piatek", "Piccolo", "Pierini", "Pisani", "Pizarro", "Podolski", "Poli", "Porro",
+      "Poulsen", "Pozzi", "Prandelli", "Puyol", "Quagliarella", "Quaresma", "Queiroz", "Raiola", "Ranocchia", "Ravanelli",
+      "Recoba", "Redondo", "Reina", "Ricci" ,"Rodriguez", "Rojo", "Romagnoli",
+      "Rossi", "Rudiger", "Ruiz", "Sacchi", "Salah", "Salas", "Samassa", "Sanchez", "Santana", "Santos",
+      "Sarri", "Saviola", "Sculli", "Seedorf", "Shaqiri", "Silva", "Simic", "Sirigu",
+      "Skriniar", "Sosa", "Spalletti", "Spinazzola", "Stankovic", "Suarez", "Taarabt", "Taison", "Terry", "Thiago",
+      "Totti", "Torres", "Traore", "Trotta", "Umtiti", "Udogie", "Upamecano", "Valeri", "Varela", "Vecino",
+      "Ventura", "Verdi", "Veron", "Verratti", "Vidal", "Vieira", "Villa", "Vinci", "Vlahovic", "Volpi",
+      "Vukotic", "Walker", "Xhaka", "Yamada", "Yilmaz", "Zaccagni", "Zanetti", "Zaza", "Zidane",
+      "Zlatan", "Zola", "Zapata", "Zarate", "Zaniolo", "Zubimendi", "Aké", "Alvarez", "Bennacer", "Boloca",
+      "Ciervo", "Depaoli", "Dimarco", "Estupiñán", "Ferlaino", "Galeno", "Gyasi", "Højlund",
+      "Ibrahimi", "Kulusevski", "Mount", "Nkunku", "Orsolini", "Parisi", "Petagna", "Pobega", "Reijnders", "Sundqvist",
+      "Tsimikas", "Ünder", "Vieira2", "Weah", "Xavi", "Yarmolenko", "Zakaria", "Zirkzee", "Benetti", "Baldé",
+      "Bellingham", "DeLigt", "DeJong", "Foden", "Gvardiol", "Mané", "Neymar", "Messi", "Rodrygo", "Vinícius",
+      "Mbappé", "Konaté", "Saka", "Tchouaméni", "Ödegaard", "Garnacho", "Singh", "Walker2", "Zaha",
+      "Fofana", "Sorloth", "White", "Rice", "Pulisic", "Origi", "Dolberg",
+      "Reina", "Felix", "Sanches", "Cancelo", "Dias", "Silvestri", "Gatti", "Pinamonti",
+
+
+      "Allegri", "Ancelotti", "Benitez", "Bielsa", "Blanc", "Capello", "Conte", "DeZerbi", "Deschamps", "DiBiasi",
+      "DiFrancesco", "Donadoni", "Ferguson", "Finke", "Garcia", "Gasperini", "Guardiola", "Haaland", "Hiddink",
+      "Hodgson", "Inzaghi", "Jokanovic", "Juric", "Klopp", "Lautaro", "Lichtsteiner", "Lopetegui", "LouisvanGaal", "Mancini",
+      "Maradona", "Martinez", "Mazzarri", "Montella", "Mourinho", "Otamendi", "Pioli", "Pochettino", "Ranieri", "Reina",
+      "Rijkaard", "Rodriguez", "Rohr", "Sacchi", "Sarri", "Scaloni", "Seedorf", "Simeone", "Spalletti", "Souness",
+      "Sousa", "Suarez", "SvenGoran", "Tedesco", "Terry", "Thiago", "Tuchel", "VanBronckhorst", "VanDerVaart", "VanDijk",
+      "VanGaal", "Vieira", "Wenger", "Zaccheroni", "Zambrotta", "Zanetti", "Zenga", "Zidane", "Zola", "Zubizarreta",
+      "Alvarez", "ArneSlot", "Barça", "Bayern", "Bravo", "Carletto", "Ceara", "Cocu", "Coutinho", "Crespo",
+      "Curci", "Dalic", "Darmian", "Davids", "DeCeglie", "DeLigt", "DelPiero", "Dzeko", "Ederson", "ElShaarawy",
+      "Erikten", "Esposito", "Fabinho", "Farioli", "Fekir", "Fermín", "Fonseca", "Galtier",
+   "Gatti", "Gomes", "Gutierrez", "Hakimi", "Handanovic", "Jimenez", "Kante", "Kolarov", "Koulibaly",
+      "Laborda", "Lamine", "Lozano", "Maicon", "Mahrez", "Martinez2", "Mbappé", "Melo", "Milik", "Molina",
+      "Mori", "Moutinho", "Musso", "Nainggolan", "Navarro", "Ndidi", "Neto", "Ocampos", "Osimhen", "Palermo",
+      "Pandev", "Paredes", "Parma", "Patrice", "Pato", "Peeters", "Pellegrini", "Pinto", "Pizarro"
+      ,
+      "Moggi", "DiCanio", "Pardo", "Zampa", "BrunoPizzul", "Tardelli", "Bonan", "Abate", "Bergomi",
+      "Raiola", "Lippolis", "Gentile", "Mazzocchi", "DiMarzio", "Pedullà", "Bergonzi", "Corini", "Facchetti",
+      "Zanetti", "Galiani", "Rimedio", "Varriale", "Bergonzi2", "Bergomi2", "Balzaretti", "Longhi", "Tardelli2",
+      "Sconcerti", "Criscitiello",
+      "Zazzaroni", "DiCarlo", "Callegari",
+      "Tricarico", "Giunta", "Rocchi", "Caressa", "Cattaneo"
+      ,
+      "Berlusconi", "Moratti", "Agnelli", "Thohir", "DeLaurentiis", "Lotito", "Pozzo", "Siviero", "Ferrero", "DellaValle",
+      "Cellino", "Moggi", "Pastorino", "Rossi", "Tacopina", "Zhang", "Commisso", "Tombolini", "Fenucci", "Spinelli",
+      "Percassi", "Mancini", "Ghirelli", "Baldini", "Beretta",
+      "Cairo", "Riva", "Marotta"
+    ];
+    let ruolo = "";
+    const selezionaruolo = document.getElementById("selezionaruolo");
+    const titologriglia = document.getElementById("titoloGriglia");
+    // HASH STRING → SEED
+    function stringToSeed(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return hash >>> 0;
+    }
+
+    // PRNG deterministico
+    function mulberry32(seed) {
+      return function () {
+        seed |= 0;
+        seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      }
+    }
+
+    // ESTRAE M ELEMENTI PSEUDOCASUALI
+    function pickSeeded(list, m, password) {
+      const seed = stringToSeed(password);
+      const rand = mulberry32(seed);
+      const arr = [...list];
+      const result = [];
+      for (let i = 0; i < m && arr.length > 0; i++) {
+        const index = Math.floor(rand() * arr.length);
+        result.push(arr[index]);
+        arr.splice(index, 1);
+      }
+      return result;
+    }
+
+    // CREA GRIGLIA
+    function generaGriglia() {
+      const password = document.getElementById("parola").value;
+      if (password.length == 0) {
+        alert("Inserisci una parola d'ordine");
+        return;
+      }
+      if (selezionaruolo.value == "NESSUNASELEZIONE") {
+        alert("Inserisci un ruolo");
+        return;
+      } else {
+        if (selezionaruolo.value == "SI") {
+          ruolo = "Capitano";
+
+        }
+        else {
+          ruolo = "Civile";
+        }
+
+      }
+      function controllaVittoria() {
+        const tiles = document.querySelectorAll(".tile");
+        let bluSelezionate = true;
+        let rosseSelezionate = true;
+        let neraCliccata = false;
+
+        tiles.forEach(t => {
+          const colore = t.dataset.colore;
+          const selez = t.dataset.selezionato === "true";
+
+          if (colore === "blu" && !selez) bluSelezionate = false;
+          if (colore === "rosso" && !selez) rosseSelezionate = false;
+          if (colore === "nero" && selez) neraCliccata = true;
+        });
+
+        if (neraCliccata) {
+          alert("Hai cliccato la casella nera, la tua squadra ha perso!");
+        } else if (bluSelezionate) {
+          alert("Hanno vinto i blu!");
+        } else if (rosseSelezionate) {
+          alert("Hanno vinto i rossi!");
+        }
+      }
+
+      // NASCONDE LE IMPOSTAZIONI
+      document.getElementById("pannelloImpostazioni").style.display = "none";
+
+      // MOSTRA LA GRIGLIA
+      document.getElementById("grigliaSchermata").style.display = "flex";
+
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+
+      const estratti = pickSeeded(parole, 25, password);
+
+      const tessereColor = generaTessere(password); // ottieni i colori
+
+      estratti.forEach((parola, idx) => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.textContent = parola;
+
+        tile.dataset.colore = tessereColor[idx + 1];
+        tile.dataset.mostra = "false";
+        tile.dataset.selezionato = "false"; // nuova proprietà per controllare selezione
+
+        if (ruolo === "Capitano") {
+          // Mostra subito i colori
+          switch (tile.dataset.colore) {
+            case 'blu': tile.style.background = "#2196F3"; tile.style.color = "white"; break;
+            case 'rosso': tile.style.background = "#F44336"; tile.style.color = "white"; break;
+            case 'nero': tile.style.background = "#000"; tile.style.color = "white"; break;
+            case 'giallo': tile.style.background = "#FFEB3B"; tile.style.color = "black"; break;
+          }
+
+          tile.onclick = function () {
+            if (tile.dataset.selezionato === "false") {
+              // Aggiunge la X nera gigante
+              const x = document.createElement("div");
+              x.className = "xmark";
+              x.textContent = "✖";
+              x.style.position = "absolute";
+              x.style.top = "0";
+              x.style.left = "0";
+              x.style.width = "100%";
+              x.style.height = "100%";
+              x.style.display = "flex";
+              x.style.alignItems = "center";
+              x.style.justifyContent = "center";
+              x.style.fontSize = "60px";
+              x.style.color = "black";
+              tile.style.position = "relative"; // importante
+              tile.appendChild(x);
+
+              tile.dataset.selezionato = "true";
+              controllaVittoria();
+            }
+          };
+
+        } else {
+          // Civile: parte neutra
+          tile.style.background = "white";
+          tile.style.color = "black";
+
+          tile.onclick = function () {
+            if (tile.dataset.mostra === "false") {
+              switch (tile.dataset.colore) {
+                case 'blu': tile.style.background = "#2196F3"; tile.style.color = "white"; break;
+                case 'rosso': tile.style.background = "#F44336"; tile.style.color = "white"; break;
+                case 'nero': tile.style.background = "#000"; tile.style.color = "white"; break;
+                case 'giallo': tile.style.background = "#FFEB3B"; tile.style.color = "black"; break;
+              }
+              tile.dataset.mostra = "true";
+              tile.dataset.selezionato = "true";
+
+              controllaVittoria();
+            }
+          };
+        }
+
+        grid.appendChild(tile);
+      });
+      // Funzione per controllare vittoria o sconfitta
+
+    }
+
+    document.getElementById("bottoneAvanti").onclick = generaGriglia;
+    function generaTessere(password) {
+      const seed = stringToSeed(password);
+      const rand = mulberry32(seed);
+
+      // 1..25
+      let numeri = Array.from({ length: 25 }, (_, i) => i + 1);
+
+      // mescola pseudocasuale
+      for (let i = numeri.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [numeri[i], numeri[j]] = [numeri[j], numeri[i]];
+      }
+
+      // Dividi i numeri
+      const gruppo1 = numeri.slice(0, 9);  // 9 tessere
+      const gruppo2 = numeri.slice(9, 17); // 8 tessere
+      const gruppo3 = numeri.slice(17, 18); // 1 tessera nera
+      const gruppo4 = numeri.slice(18, 25); // 7 tessere gialle
+
+      // Decide casualmente quale colore inizia
+      const primoColore = rand() < 0.5 ? 'blu' : 'rosso';
+      const secondoColore = primoColore === 'blu' ? 'rosso' : 'blu';
+      if (primoColore == 'rosso') {
+        titologriglia.textContent = "Inizia squadra blu";
+        titologriglia.style.color="blue"
+      } else {
+        titologriglia.textContent = "Inizia squadra rossa"
+        titologriglia.style.color = "red"
+      }
+      // Mescola interno gruppo1 per assegnare colore
+      const gruppo1Color = [];
+      for (let i = 0; i < 9; i++) {
+        gruppo1Color.push(i < 4 ? primoColore : secondoColore); // 4-5 tessere per bilanciare 50/50
+      }
+      // shuffle interno pseudocasuale
+      for (let i = gruppo1Color.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [gruppo1Color[i], gruppo1Color[j]] = [gruppo1Color[j], gruppo1Color[i]];
+      }
+
+      // Gruppo2 → opposto
+      const gruppo2Color = [];
+      for (let i = 0; i < 8; i++) {
+        gruppo2Color.push(i < 4 ? secondoColore : primoColore); // 4-4
+      }
+      for (let i = gruppo2Color.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [gruppo2Color[i], gruppo2Color[j]] = [gruppo2Color[j], gruppo2Color[i]];
+      }
+
+      // Gruppo3 → nero
+      const gruppo3Color = ['nero'];
+
+      // Gruppo4 → giallo
+      const gruppo4Color = Array(7).fill('giallo');
+
+      // Assegna colori agli indici
+      const tessere = {};
+      for (let i = 0; i < 9; i++) { tessere[gruppo1[i]] = gruppo1Color[i]; }
+      for (let i = 0; i < 8; i++) { tessere[gruppo2[i]] = gruppo2Color[i]; }
+      tessere[gruppo3[0]] = 'nero';
+      for (let i = 0; i < 7; i++) { tessere[gruppo4[i]] = 'giallo'; }
+
+      return tessere; // oggetto {numero: colore}
+    }
+
+
+  </script>
+</body>
+</html>
