@@ -159,10 +159,34 @@
     <div class="container">
       <h1>Impostazioni</h1>
       <form>
-        <div class="form-group" id="campoparola">
-          <label for="parola">Inserisci Parola d'ordine</label>
-          <input type="text" id="parola" name="parola"
-                 oninput="this.value=this.value.replace(/[^A-Za-z0-9]/g,'').toUpperCase()" required>
+
+
+
+
+        <div class="form-group" id="grandezza">
+          <label id="lblgrandezza" for="grandezzagriglia">Grandezza Griglia</label>
+          <select id="grandezzagriglia">
+            <option value="9">PICCOLISSIMA (3x3)</option>
+            <option value="16">PICCOLA (4x4)</option>
+            <option value="25" selected>DEFAULT (5x5)</option>
+            <option value="36">GRANDE (6x6)</option>
+            <option value="49">GRANDISSIMA (7x7)</option>
+          </select>
+        </div>
+        <div class="form-group" id="camponumeroparole1">
+          <label for="numeroparole1">Numero Parole Squadra Iniziale</label>
+          <input type="number" id="numeroparole1" name="numeroparole1"
+                 step="1" value="9" required>
+        </div>
+        <div class="form-group" id="camponumeroparole2">
+          <label for="numeroparole2">Numero ParoleSeconda Squadra (si consiglia 1 in meno della prima)</label>
+          <input type="number" id="numeroparole2" name="numeroparole2"
+                 step="1" value="8" required>
+        </div>
+        <div class="form-group" id="camponunmeroparolenere">
+          <label for="numeroparolenere">Numero Parole Nere</label>
+          <input type="number" id="numeroparolenere" name="numeroparolenere"
+                 step="1" value="1" required>
         </div>
 
         <div class="form-group" id="contenitoreruolo">
@@ -173,7 +197,11 @@
             <option value="SI">SI</option>
           </select>
         </div>
-
+        <div class="form-group" id="campoparola">
+          <label for="parola">Inserisci Parola d'ordine</label>
+          <input type="text" id="parola" name="parola"
+                 oninput="this.value=this.value.replace(/[^A-Za-z0-9]/g,'').toUpperCase()" required>
+        </div>
         <button id="bottoneAvanti" type="button">Avanti</button>
       </form>
     </div>
@@ -204,26 +232,26 @@
       "Eto’o", "Fabinho", "Fabbri", "Facchetti", "Falcao", "Falcone", "Faraoni", "Farnerud", "Fazio",
       "Ferrante", "Ferrari", "Ferreira", "Figueiredo", "Filippi", "Fiorillo", "Floccari", "Forlan", "Frabotta", "Franchi",
       "Gabbiadini", "Gagliardini", "Garcia", "Gattuso", "Giaccherini", "Gomes", "Gomez", "Goncalves", "Gonzalez", "Gosens",
-      "Greco", "Grifo", "Guarente", "Gueye",  "Hakimi", "Handanovic", "Hasebe", "Hernandez",
+      "Greco", "Grifo", "Guarente", "Gueye", "Hakimi", "Handanovic", "Hasebe", "Hernandez",
       "Higuain", "Hoedt", "Icardi", "Ilicic", "Immobile", "Ince", "Inzaghi", "Isak",
-      "Jair",  "Jankulovski", "Jorginho", "Kabore", "Kakà", "Kaladze", "Kalinic", "Kamara", "Karagounis",
+      "Jair", "Jankulovski", "Jorginho", "Kabore", "Kakà", "Kaladze", "Kalinic", "Kamara", "Karagounis",
       "Karamoh", "Karsdorp", "Kessie", "Kimmich", "Kjaer", "Kolarov", "Kouame", "Koulibaly", "Kovacic", "Kramer",
       "Krunic", "Kucka", "Kudus", "Lainer", "Lapadula", "Lazaro", "Leao", "Leroy", "Lichtsteiner",
       "Llorente", "Lopez", "Luiz", "Lukaku", "Luperto", "Maignan", "Mancini", "Mandzukic", "Manolas", "Mannini",
       "Maresca", "Marin", "Martinez", "Martins", "Mata", "Mauri", "Maxwell", "Medel", "Melo",
       "Menez", "Meret", "Miccoli", "Milanetto", "Milinkovic", "Milito", "Modesto", "Montero", "Montolivo", "Motta",
-      "Muñoz", "Musso", "Nainggolan", "Nesta",  "Negro", "Nolito", "Obiang",
+      "Muñoz", "Musso", "Nainggolan", "Nesta", "Negro", "Nolito", "Obiang",
       "Ochoa", "Olsen", "Ospina", "Palacio", "Paletta", "Pandev",
       "Paredes", "Pastore", "Pato", "Pazzini", "Pellegri", "Pellegrini", "Pereira", "Perin", "Peruzzi",
-      "Pessotto", "Piatek", "Piccoli","Pisani", "Pizarro", "Podolski", "Poli", 
+      "Pessotto", "Piatek", "Piccoli", "Pisani", "Pizarro", "Podolski", "Poli",
       "Poulsen", "Pozzi", "Prandelli", "Puyol", "Quagliarella", "Quaresma", "Raiola", "Ranocchia", "Ravanelli",
-      "Recoba", "Redondo", "Reina", "Ricci" ,"Rodriguez", "Rojo", "Romagnoli",
+      "Recoba", "Redondo", "Reina", "Ricci", "Rodriguez", "Rojo", "Romagnoli",
       "Rossi", "Rudiger", "Ruiz", "Sacchi", "Salah", "Salas", "Samardzic", "Sanchez", "Santana", "Santos",
       "Sarri", "Saviola", "Sculli", "Seedorf", "Shaqiri", "Silva", "Simic", "Sirigu",
       "Skriniar", "Sosa", "Spalletti", "Spinazzola", "Stankovic", "Suarez", "Taarabt", "Taison", "Terry", "Thiago",
       "Totti", "Torres", "Traore", "Trotta", "Umtiti", "Udogie", "Upamecano", "Valeri", "Varela", "Vecino",
-      "Ventura", "Verdi", "Veron","Honda","Rooney","Drogba", "Verratti", "Vidal", "Vieira", "Villa", "Vlahovic", "Volpi",
-       "Walker", "Xhaka", "Kamda", "Yilmaz", "Zaccagni", "Zanetti", "Zaza", "Zidane",
+      "Ventura", "Verdi", "Veron", "Honda", "Rooney", "Drogba", "Verratti", "Vidal", "Vieira", "Villa", "Vlahovic", "Volpi",
+      "Walker", "Xhaka", "Kamda", "Yilmaz", "Zaccagni", "Zanetti", "Zaza", "Zidane",
       "Zlatan", "Zola", "Zapata", "Zarate", "Zaniolo", "Zubimendi", "Aké", "Alvarez", "Bennacer", "Boloca",
       "Ciervo", "Depaoli", "Dimarco", "Estupiñán", "Ferlaino", "Galeno", "Gyasi", "Højlund",
       "Ibrahimi", "Kulusevski", "Mount", "Nkunku", "Orsolini", "Parisi", "Petagna", "Pobega", "Reijnders", "Sundqvist",
@@ -238,25 +266,25 @@
       "DiFrancesco", "Donadoni", "Ferguson", "Garcia", "Gasperini", "Guardiola", "Haaland", "Hiddink",
       "Hodgson", "Inzaghi", "Kovac", "Juric", "Klopp", "Lautaro", "Lopetegui", "VanGaal", "Mancini",
       "Maradona", "Martinez", "Mazzarri", "Montella", "Mourinho", "Otamendi", "Pioli", "Pochettino", "Ranieri", "Reina",
-      "Rijkaard",  "Sacchi", "Sarri", "Scaloni", "Seedorf", "Simeone", "Spalletti", "Souness",
+      "Rijkaard", "Sacchi", "Sarri", "Scaloni", "Seedorf", "Simeone", "Spalletti", "Souness",
       "Sousa", "Suarez", "SvenGoran", "Tedesco", "Terry", "Thiago", "Tuchel", "VanBronckhorst", "VanDerVaart", "VanDijk",
-       "Vieira", "Wenger", "Zaccheroni", "Zambrotta","Zenga", "Zidane", "Zola", "Zubizarreta",
+      "Vieira", "Wenger", "Zaccheroni", "Zambrotta", "Zenga", "Zidane", "Zola", "Zubizarreta",
       "Alvarez", "ArneSlot", "Barça", "Bayern", "Bravo", "Crespo",
       "Curci", "Dalic", "Darmian", "Davids", "DeCeglie", "DeLigt", "DelPiero", "Dzeko", "Ederson", "ElShaarawy",
       "Eriksen", "Esposito", "Fabinho", "Farioli", "Fekir", "Fermín", "Fonseca", "Galtier",
       "Hakimi", "Handanovic", "Jimenez", "Kante",
-   
+
       "Koulibaly",
       "Lamine", "Lozano", "Maicon", "Mahrez", "Mbappé", "Melo", "Milik", "Molina",
-       "Moutinho", "Navarro", "Ndidi", "Neto", "Ocampos", "Osimhen", "Palermo",
+      "Moutinho", "Navarro", "Ndidi", "Neto", "Ocampos", "Osimhen", "Palermo",
       "Pandev", "Paredes", "Parma", "Patrice", "Pato", "Peeters", "Pellegrini", "Pinto", "Pizarro"
       ,
-      "Moggi", "DiCanio", "Pardo", "Zampa", "Pizzul", "Tardelli", 
+      "Moggi", "DiCanio", "Pardo", "Zampa", "Pizzul", "Tardelli",
       "Raiola", "Lippi", "Gentile", "Mazzocchi", "DiMarzio", "Pedullà", "Bergonzi", "Corini", "Facchetti",
-      "Zanetti", "Galiani", "Rimedio", "Varriale",  "Balzaretti", "Longhi",
+      "Zanetti", "Galiani", "Rimedio", "Varriale", "Balzaretti", "Longhi",
       "Sconcerti", "Criscitiello",
       "Zazzaroni", "DiCarlo", "Callegari",
-       "Giunta", "Rocchi", "Caressa", "Cattaneo"
+      "Giunta", "Rocchi", "Caressa", "Cattaneo"
       ,
       "Berlusconi", "Moratti", "Agnelli", "Thohir", "DeLaurentiis", "Lotito", "Pozzo", "Siviero", "Ferrero", "DellaValle",
       "Cellino", "Moggi", "Pastorino", "Rossi", "Tacopina", "Zhang", "Commisso", "Tombolini", "Fenucci", "Spinelli",
@@ -312,7 +340,7 @@
       "Rivaldo",
       "Romário",
       "Shevchenko"
-     ,
+      ,
       "San Siro",
       "Stadio Olimpico",
       "Allianz Stadium",
@@ -328,8 +356,8 @@
       "La Bombonera",
       "Azteca",
       "Stanford Bridge"
-    ,
-    
+      ,
+
       "Juventus",
       "Milan",
       "Inter",
@@ -392,6 +420,16 @@
     let ruolo = "";
     const selezionaruolo = document.getElementById("selezionaruolo");
     const titologriglia = document.getElementById("titoloGriglia");
+    const grandezzagriglia = document.getElementById("grandezzagriglia");
+    const numeroparole1 = document.getElementById("numeroparole1");
+    const numeroparole2 = document.getElementById("numeroparole2");
+    const numeroparolenere = document.getElementById("numeroparolenere");
+    let dimensione = 25;
+    let parole1 = 9;
+    let parole2 = 8;
+    let parolegialle = 7;
+    let parolenere = 1;
+
     // HASH STRING → SEED
     function stringToSeed(str) {
       let hash = 0;
@@ -445,6 +483,21 @@
         else {
           ruolo = "Civile";
         }
+        if (parseInt(grandezzagriglia.value) - parseInt(numeroparole1.value) - parseInt(numeroparole2.value) - parseInt(numeroparolenere.value) >= 0) {
+          dimensione = parseInt(grandezzagriglia.value)
+          parole1 = parseInt(numeroparole1.value)
+          parole2 = parseInt(numeroparole2.value)
+          parolenere = parseInt(numeroparolenere.value);
+          parolegialle = parseInt(grandezzagriglia.value) - parseInt(numeroparole1.value) - parseInt(numeroparole2.value) - parseInt(numeroparolenere.value);
+        } else {
+          alert("Il numero di parole totali è troppo piccolo per le impostazioni selezionate");
+          return;
+        }
+        const grid = document.getElementById("grid");
+        const size = Math.sqrt(dimensione);
+        grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        grid.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
 
       }
       function controllaVittoria() {
@@ -480,7 +533,7 @@
       const grid = document.getElementById("grid");
       grid.innerHTML = "";
 
-      const estratti = pickSeeded(parole, 25, password);
+      const estratti = pickSeeded(parole, dimensione, password);
 
       const tessereColor = generaTessere(password); // ottieni i colori
 
@@ -559,7 +612,7 @@
       const rand = mulberry32(seed);
 
       // 1..25
-      let numeri = Array.from({ length: 25 }, (_, i) => i + 1);
+      let numeri = Array.from({ length: dimensione }, (_, i) => i + 1);
 
       // mescola pseudocasuale
       for (let i = numeri.length - 1; i > 0; i--) {
@@ -568,24 +621,24 @@
       }
 
       // Dividi i numeri
-      const gruppo1 = numeri.slice(0, 9);  // 9 tessere
-      const gruppo2 = numeri.slice(9, 17); // 8 tessere
-      const gruppo3 = numeri.slice(17, 18); // 1 tessera nera
-      const gruppo4 = numeri.slice(18, 25); // 7 tessere gialle
+      const gruppo1 = numeri.slice(0, parole1);  // 9 tessere
+      const gruppo2 = numeri.slice(parole1, parole1 + parole2); // 8 tessere
+      const gruppo3 = numeri.slice(parole1 + parole2, parole1 + parole2 + parolenere); // 1 tessera nera
+      const gruppo4 = numeri.slice(parole1 + parole2 + parolenere, dimensione); // 7 tessere gialle
 
       // Decide casualmente quale colore inizia
       const primoColore = rand() < 0.5 ? 'blu' : 'rosso';
       const secondoColore = primoColore === 'blu' ? 'rosso' : 'blu';
       if (primoColore == 'rosso') {
         titologriglia.textContent = "Inizia squadra blu";
-        titologriglia.style.color="blue"
+        titologriglia.style.color = "blue"
       } else {
         titologriglia.textContent = "Inizia squadra rossa"
         titologriglia.style.color = "red"
       }
       // Mescola interno gruppo1 per assegnare colore
       const gruppo1Color = [];
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < parole1; i++) {
         gruppo1Color.push(i < 4 ? primoColore : secondoColore); // 4-5 tessere per bilanciare 50/50
       }
       // shuffle interno pseudocasuale
@@ -596,7 +649,7 @@
 
       // Gruppo2 → opposto
       const gruppo2Color = [];
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < parole2; i++) {
         gruppo2Color.push(i < 4 ? secondoColore : primoColore); // 4-4
       }
       for (let i = gruppo2Color.length - 1; i > 0; i--) {
@@ -605,17 +658,17 @@
       }
 
       // Gruppo3 → nero
-      const gruppo3Color = ['nero'];
+      const gruppo3Color = Array(parolenere).fill('nero');
 
       // Gruppo4 → giallo
-      const gruppo4Color = Array(7).fill('giallo');
+      const gruppo4Color = Array(parolegialle).fill('giallo');
 
       // Assegna colori agli indici
       const tessere = {};
-      for (let i = 0; i < 9; i++) { tessere[gruppo1[i]] = gruppo1Color[i]; }
-      for (let i = 0; i < 8; i++) { tessere[gruppo2[i]] = gruppo2Color[i]; }
-      tessere[gruppo3[0]] = 'nero';
-      for (let i = 0; i < 7; i++) { tessere[gruppo4[i]] = 'giallo'; }
+      for (let i = 0; i < parole1; i++) { tessere[gruppo1[i]] = gruppo1Color[i]; }
+      for (let i = 0; i < parole2; i++) { tessere[gruppo2[i]] = gruppo2Color[i]; }
+      for (let i = 0; i < parolenere; i++) { tessere[gruppo3[i]] = 'nero'; }
+      for (let i = 0; i < parolegialle; i++) { tessere[gruppo4[i]] = 'giallo'; }
 
       return tessere; // oggetto {numero: colore}
     }
